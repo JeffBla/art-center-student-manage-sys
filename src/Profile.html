@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <?!= include("ProfileCSS");?>
+  </head>
+  <body>
+    <header>
+      <h1>我的資訊</h1>
+      <h3 id="username"><?= username ?></h3>
+    </header>
+    <!-- Navigation bar -->
+    <div class="nav-container">
+      <input type="hidden" value="<?= username ?>" name="username">
+      <form method="post" action="<?= getUrl() ?>">
+          <input type="hidden" value="<?= username ?>" name="username">
+          <input type="hidden" value="<?= studentid ?>" name="studentid">
+          <button type="submit" value="Home" name="HomeButton" >
+              <i class="fa fa-home" aria-hidden="true"></i> 首頁
+          </button>
+      </form>
+      <input type="hidden" value="<?= username ?>" name="username">
+      <form method="post" action="<?= getUrl() ?>">
+          <input type="hidden" value="<?= username ?>" name="username">
+          <input type="hidden" value="<?= studentid ?>" name="studentid">
+          <button type="submit" value="Profile" name="ProfileButton" >
+              <i class="fa fa-user" aria-hidden="true"></i> 我的資訊
+          </button>
+      </form>
+      <input type="hidden" value="<?= username ?>" name="username">
+      <form method="post" action="<?= getUrl() ?>">
+          <input type="hidden" value="<?= username ?>" name="username">
+          <input type="hidden" value="<?= studentid ?>" name="studentid">
+          <button type="submit" value="SelectService" name="SelectLearningButton" >
+            <i class="fa fa-hand-o-up" aria-hidden="true"></i> 選擇服務學習
+          </button>
+      </form>
+      <input type="hidden" value="<?= username ?>" name="username">
+      <form method="post" action="<?= getUrl() ?>">
+          <input type="hidden" value="<?= username ?>" name="username">
+          <input type="hidden" value="<?= studentid ?>" name="studentid">
+          <button type="submit" value="Logout" name="LogoutButton" >
+              <i class="fa fa-sign-out" aria-hidden="true"></i> 登出
+          </button>
+      </form>
+    </div>
+    <div id="info-box">
+      <div class="container">
+        <p id="name">姓名: <?= username ?></p>
+        <p id="student-id">學號: <?= studentid ?></p>
+        <p id="email">Email: <?= email ?></p>
+        <p id="phone">手機: <?= phone ?></p>
+      </div>
+      <div class="table-container">
+        <table id="my-service">
+            <caption>已選服務學習</caption>
+            <tr> 
+                <th>活動名稱</th> 
+                <th>服務學習日期</th> 
+                <th>服務學習地點</th> 
+                <th>服務學習時數</th> 
+                <th>備註</th> 
+            </tr> 
+        </table>
+      </div>
+      <div id="loading" style="display:none;"></div>
+      <div id="empty-content" style="display:none;">尚未選擇任何服務學習</div>
+      <button id="check-btn">檢視我的服務學習</button>
+    </div>
+    
+    <?!= include("ProfileJS");?>
+  </body>
+</html>

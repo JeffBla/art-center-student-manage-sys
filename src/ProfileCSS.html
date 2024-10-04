@@ -1,0 +1,203 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+  body {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      font-family: 'Montserrat', sans-serif;;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+  }
+
+  header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      background-color: #70b8f3;
+      color: black;
+  }
+
+  header h1 {
+    align-items: center;
+    padding-left: 1rem;
+    cursor: pointer;
+    color: black;
+  }
+
+  header h3 {
+      position: absolute;
+      top: 10px;
+      right: 100px;
+  }
+
+  #info-box {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      padding-top: 3rem;
+      width: 50%;
+      color: black;
+      font-weight: bold;
+      background-color: #f4f4f4;
+  }
+
+  .table-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 50%;
+      font-weight: bold;
+      background-color: #f4f4f4;
+      color: black;
+  }
+
+  /* Navigation bar container */
+  .nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    background-color: #70b8f3;
+    padding: 1rem;
+  }
+
+  .nav-container form {
+    margin: 0;
+  }
+
+  .nav-container button {
+    background-color: rgb(22, 61, 138);
+    color: whitesmoke;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+  .nav-container button:hover {
+    background-color: #ffd900;
+    color: rgb(10, 58, 117);
+  }
+
+  #check-btn {
+    background-color: rgb(22, 61, 138);
+    text-align: center;
+    color: whitesmoke;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 10px;
+    margin: 2rem 0;
+    width: 25%;
+  }
+
+  #check-btn:hover {
+    background-color: #ffd900;
+    color: rgb(10, 58, 117);
+  }
+
+  /* Style the table */
+  #my-service {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  /* Style the table headers */
+  #my-service th {
+    background-color: #70b8f3;
+    color: white;
+    padding: 10px;
+    text-align: left;
+  }
+
+  /* Style the table rows and cells */
+  #my-service td, #my-service th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  /* Add a hover effect for table rows */
+  #my-service tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* Style for even rows for zebra-striping */
+  #my-service tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  /* Style the table's caption */
+  #my-service caption {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  /* Style table border */
+  #my-service {
+    border: 2px solid #024c92;
+  }
+
+  #empty-content {
+    margin: 20px auto;
+  }
+
+  #loading {
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid #3498db;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin: 20px auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @media screen and (max-width: 676px) {
+      
+      .nav-container {
+          display: block;
+          flex-direction: column;
+          align-items: center;
+      }
+
+      form {
+          display: block;
+          width: 100%;
+          text-align: left;
+          margin: 8px 0;
+      }
+
+      button {
+          width: 100%;
+          padding: 10px;
+          text-align: left;
+          overflow: hidden;
+          margin: 5px 0;
+      }
+
+  }
+
+  
+</style>
+
+
