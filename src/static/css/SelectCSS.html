@@ -1,50 +1,47 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <style>
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+  @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
-body {
+  body {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    font-family: 'Montserrat', sans-serif;;
+    font-family: "Montserrat", sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-}
+  }
 
-header {
+  header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
     background-color: #70b8f3;
     color: black;
-}
+  }
 
-
-header h1 {
+  header h1 {
     align-items: center;
     padding-left: 1rem;
     cursor: pointer;
     color: black;
-}
+  }
 
-header h3 {
+  header h3 {
     position: absolute;
     top: 10px;
     right: 100px;
-}
+  }
 
-#info-box {
+  #info-box {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
+  }
 
-.container {
+  .container {
     display: flex;
     flex-direction: column;
     justify-content: left;
@@ -53,22 +50,22 @@ header h3 {
     color: black;
     font-weight: bold;
     background-color: #f4f4f4;
-}
+  }
 
-/* Navigation bar container */
-.nav-container {
+  /* Navigation bar container */
+  .nav-container {
     display: flex;
     justify-content: center;
     gap: 1rem;
     background-color: #70b8f3;
     padding: 1rem;
-}
+  }
 
-.nav-container form {
+  .nav-container form {
     margin: 0;
-}
+  }
 
-.nav-container button {
+  .nav-container button {
     background-color: rgb(22, 61, 138);
     color: whitesmoke;
     border: none;
@@ -76,32 +73,32 @@ header h3 {
     font-size: 1rem;
     cursor: pointer;
     border-radius: 10px;
-}
+  }
 
-.nav-container button:hover {
+  .nav-container button:hover {
     background-color: #ffd900;
     color: rgb(10, 58, 117);
-}
+  }
 
-select {
+  select {
     position: sticky;
     left: 37.5%;
     width: 25%;
     padding: 0.8em;
     margin: 1rem;
     border: solid 1px #333;
-    border: 2px solid currentcolor; 
+    border: 2px solid currentcolor;
     font-weight: bold;
-    letter-spacing: .15em;
+    letter-spacing: 0.15em;
     border-radius: 10px;
-    &:focus, &:active {
+    &:focus,
+    &:active {
       outline: 0;
       border-color: rgb(60, 131, 197);
     }
-}
+  }
 
-
-.info {
+  .info {
     display: flex;
     justify-content: center;
     margin: 2rem 2rem;
@@ -119,7 +116,7 @@ select {
     }
     &[data-selected=""]:not(.loading) {
       .no-selection {
-          display: block;
+        display: block;
       }
     }
     &.loading {
@@ -128,26 +125,24 @@ select {
         animation: loading 1.5s linear;
         animation-iteration-count: 2;
       }
-
     }
-}
+  }
 
-.info select {
+  .info select {
     position: absolute;
     left: 2rem;
-}
+  }
 
-.event-info {
+  .event-info {
     display: none;
-}
+  }
 
-/* Show event info when data is loaded */
-.info:not(.loading) .event-info {
+  /* Show event info when data is loaded */
+  .info:not(.loading) .event-info {
     display: block;
-}
+  }
 
-
-#confirm-btn {
+  #confirm-btn {
     display: block;
     margin: 2rem auto;
     text-align: center;
@@ -159,47 +154,44 @@ select {
     cursor: pointer;
     border-radius: 10px;
     width: 20%;
-}
+  }
 
-#confirm-btn:hover {
+  #confirm-btn:hover {
     background-color: #ffd900;
     color: rgb(10, 58, 117);
-}
+  }
 
-  
-@keyframes loading {
-    from{
+  @keyframes loading {
+    from {
       letter-spacing: 0em;
     }
     to {
-      letter-spacing: .25em;
+      letter-spacing: 0.25em;
     }
-}
+  }
 
-@media screen and (max-width: 676px) {
-    
+  @media screen and (max-width: 676px) {
     .nav-container {
-        display: block;
-        flex-direction: column;
-        align-items: center;
-        min-height: 200px;
-        overflow: auto;
+      display: block;
+      flex-direction: column;
+      align-items: center;
+      min-height: 200px;
+      overflow: auto;
     }
 
     form {
-        display: block;
-        width: 100%;
-        text-align: left;
-        margin: 8px 0;
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin: 8px 0;
     }
 
     button {
-        width: 100%;
-        padding: 10px;
-        text-align: left;
-        overflow: hidden;
-        margin: 5px 0;
+      width: 100%;
+      padding: 10px;
+      text-align: left;
+      overflow: hidden;
+      margin: 5px 0;
     }
-}
-
+  }
 </style>
