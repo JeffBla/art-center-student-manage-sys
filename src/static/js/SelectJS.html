@@ -1,4 +1,52 @@
 <script>
+  function LoadSelectBoxOption() {
+    // Show the loading spinner
+    document.getElementById("loading-spinner").style.display = "flex";
+
+    console.log("Loading selection data...");
+    // Call the Apps Script function to get the data
+    google.script.run.withSuccessHandler(generateSelectBox).getSheetData();
+  }
+
+  function generateSelectBox(data) {
+    // Hide the loading spinner
+    document.getElementById("loading-spinner").style.display = "none";
+
+    // Create the select element
+    const select = document.createElement("select");
+    select.id = "selectbox";
+    select.setAttribute("data-selected", "");
+    select.name = "event";
+
+    // Add the default option
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.selected = true;
+    defaultOption.disabled = true;
+    defaultOption.textContent = "選擇一個活動";
+    select.appendChild(defaultOption);
+
+    // Create optgroups and options
+    for (const [category, events] of Object.entries(data)) {
+      const optgroup = document.createElement("optgroup");
+      optgroup.label = category;
+
+      for (const [eventName, eventDetails] of Object.entries(events)) {
+        const option = document.createElement("option");
+        option.value = eventName;
+        option.textContent = eventName;
+        optgroup.appendChild(option);
+      }
+
+      select.appendChild(optgroup);
+    }
+
+    // Insert the select element into the DOM
+    const container = document.getElementById("selectbox-container");
+    container.innerHTML = ""; // Clear any existing content
+    container.appendChild(select);
+  }
+
   // Function to handle event selection
   document.getElementById("selectbox").addEventListener("change", function () {
     const selectedValue = this.value;

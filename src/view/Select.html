@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <?!= include("Select", "css");?>
   </head>
-  <body>
+  <body onload="LoadSelectBoxOption()">
     <header>
       <h1>選擇服務學習</h1>
       <h3 id="username"><?= username ?></h3>
@@ -41,53 +41,15 @@
       </form>
     </div>
 
-    <!-- 活動選項 -->
-    <select id="selectbox" data-selected="" name="event">
-      <option value="" selected="selected" disabled="disabled">選擇一個活動</option>
-      <optgroup label="展演組/表演藝術">
-        <option value="從零開始 解放肢體 舞蹈工作坊">從零開始 解放肢體 舞蹈工作坊</option>
-        <option value="93週年校慶 丞舞製作《浮花》">93週年校慶 丞舞製作《浮花》</option>
-        <option value="成大曼陀林樂團2024音樂會《奔放》">成大曼陀林樂團2024音樂會《奔放》</option>
-        <option value="異鄉人女高音林慈音2024年獨唱會">異鄉人女高音林慈音2024年獨唱會</option>
-        <option value="琴韻詠建城-詠嘆調大提琴四重奏">琴韻詠建城-詠嘆調大提琴四重奏</option>
-      </optgroup>
-      <optgroup label="展演組/視覺展覽">
-        <option value="O分之一攝影展  撤展+場地整理">O分之一攝影展 撤展+場地整理</option>
-        <option value="O分之一攝影展  場地整理">O分之一攝影展 場地整理</option>
-        <option value="《黃文暉校友個展》展覽布展協助-1">《黃文暉校友個展》展覽布展協助 10/18(五) 13:30~16:30</option>
-        <option value="《黃文暉校友個展》展覽布展協助-2">《黃文暉校友個展》展覽布展協助 10/24(四)、10/25(五)13:30~16:30</option>
-        <option value="《黃文暉校友個展》開幕活動協助">《黃文暉校友個展》開幕活動協助</option>
-        <option value="《黃文暉校友個展》展覽卸展場地整理-1">《黃文暉校友個展》展覽卸展場地整理 11/15(五)13:30~16:30</option>
-        <option value="《黃文暉校友個展》展覽卸展場地整理-2">《黃文暉校友個展》展覽卸展場地整理 11/18(一)9:00~12:00</option>
-        <option value="《張惠華收藏展》展覽布展協助">《張惠華收藏展》展覽布展協助</option>
-        <option value="《張惠華收藏展》開幕活動協助">《張惠華收藏展》開幕活動協助</option>
-        <option value="《張惠華收藏展》展覽卸展場地整理">《張惠華收藏展》展覽卸展場地整理</option>
-        <option value="《陳昱榮個展》展覽布展協助">《陳昱榮個展》展覽布展協助</option>
-        <option value="《陳昱榮個展》開幕活動協助">《陳昱榮個展》開幕活動協助</option>
-      </optgroup>
-      <optgroup label="公共藝術/藝術典藏">
-        <option value="文創品盤點與包裝">文創品盤點與包裝</option>
-        <option value="校園藝術品維護-1">校園藝術品維護 12/4（三）15:00-17:00</option>
-        <option value="校園藝術品維護-2">校園藝術品維護 12/5（四）15:00-17:00</option>
-        <option value="校園藝術品維護-3">校園藝術品維護 12/6（五）15:00-17:00</option>
-      </optgroup>
-      <optgroup label="教育組/教育講座">
-        <option value="夢向明日的港口：2024臺南藝術節大解密">夢向明日的港口：2024臺南藝術節大解密</option>
-        <option value="藝術叩門-復興美學新趨勢">藝術叩門-復興美學新趨勢</option>
-        <option value="蔣勳美學講座">蔣勳美學講座</option>
-        <option value="簡文彬X劉慕堯 音樂講座">簡文彬X劉慕堯 音樂講座</option>
-        <option value="藝術叩門-陳瑞斌講唱會">藝術叩門-陳瑞斌講唱會</option>
-        <option value="陳瑞斌音樂會">陳瑞斌音樂會</option>
-        <option value="藝術叩門-人權藝術節影展+座談會">藝術叩門-人權藝術節影展+座談會</option>
-      </optgroup>
-      <optgroup label="教育組/宣傳推廣">
-        <option value="9-10月藝訊宣傳推廣、文宣發送-1">9-10月藝訊宣傳推廣、文宣發送 9/19(四)10:00-12:00</option>
-        <option value="9-10月藝訊宣傳推廣、文宣發送-2">9-10月藝訊宣傳推廣、文宣發送 9/20(五)10:00-12:00</option>
-        <option value="11-12月藝訊宣傳推廣、文宣發送-1">11-12月藝訊宣傳推廣、文宣發送 10/30(三)10:00-12:00</option>
-        <option value="11-12月藝訊宣傳推廣、文宣發送-2">11-12月藝訊宣傳推廣、文宣發送 10/30(三)14:00-16:00</option>
-        <option value="11-12月藝訊宣傳推廣、文宣發送-3">11-12月藝訊宣傳推廣、文宣發送 10/31(四)14:00-16:00</option>
-      </optgroup>
-    </select>
+    <!-- Activity Option -->
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+
+    <!-- Tables will be dynamically inserted here -->
+    <div id="selectbox-container"></div>
 
     <div class="info" data-selected="">
       <span class="loader">loading...</span>
