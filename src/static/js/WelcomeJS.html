@@ -5,7 +5,7 @@
 
     console.log("Loading table data...");
     // Call the Apps Script function to get the data
-    google.script.run.withSuccessHandler(displayData).getSheetData();
+    google.script.run.withSuccessHandler(displayData).getEventSheetData();
   }
 
   function displayData(data) {

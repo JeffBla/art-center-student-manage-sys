@@ -33,3 +33,21 @@ class EVENT_TABLE {
   static readonly TABLE_EVENT_TOTAL_HOUR_IDX = 8;
   static readonly TABLE_EVENT_DESCRIPTION_IDX = 9;
 }
+
+class CHOICE_TABLE {
+  static readonly CHOICE_SHEET_START = 2;
+  static readonly TABLE_CHOICE_NAME_IDX = 1;
+  static readonly TABLE_CHOICE_EVENT1_IDX = 2;
+  static readonly TABLE_CHOICE_EVENT2_IDX = 3;
+  static readonly TABLE_CHOICE_EVENT3_IDX = 4;
+  static readonly TABLE_CHOICE_EVENT4_IDX = 5;
+  static readonly TABLE_CHOICE_EVENT5_IDX = 6;
+}
+
+class PARTICIPATE_TABLE {
+  static readonly PARTICIPATE_SHEET_START = 2;
+  static readonly TABLE_PARTICIPATE_EVNET_ID_IDX = 1;
+  static readonly TABLE_PARTICIPATE_EVNET_NAME_IDX = 2;
+  static readonly TABLE_PARTICIPATE_CURRENT_WORKFORCE_IDX = 3;
+  static readonly TABLE_PARTICIPATE_WORKFORCE_LIST_IDX = 4;
+}
