@@ -1,0 +1,67 @@
+<script>
+  const signUpButton = document.getElementById("signUp");
+  const signInButton = document.getElementById("signIn");
+  const container = document.getElementById("container");
+
+  signUpButton.addEventListener("click", () => {
+    container.classList.add("right-panel-active");
+  });
+
+  signInButton.addEventListener("click", () => {
+    container.classList.remove("right-panel-active");
+  });
+
+  document.getElementById("btn").addEventListener("click", doStuff);
+
+  function doStuff() {
+    var userData = {};
+
+    userData.userName = document.getElementById("name").value;
+    userData.userStudentID = document.getElementById("student-id").value;
+    userData.userEmail = document.getElementById("email").value;
+    userData.userPhone = document.getElementById("phone").value;
+    userData.userPassword = document.getElementById("password").value;
+
+    google.script.run.withSuccessHandler(isValid).userClicked(userData);
+    document.getElementById("name").value = "";
+    document.getElementById("student-id").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("password").value = "";
+  }
+
+  function isValid(valid) {
+    const message = document.getElementById("message");
+    const message2 = document.getElementById("message2");
+    const container = document.getElementById("container");
+
+    if (valid == "FALSE") {
+      message.style.color = "#EA0000";
+      message.textContent = "You already have an account!";
+    } else if (valid == "Some field is empty.") {
+      message.style.color = "#EA0000";
+      message.textContent = "Please enter all fields";
+    } else {
+      message.style.color = "#00BB00";
+      message.textContent = "Create an Account successfully!";
+      message2.style.color = "#00BB00";
+      message2.textContent = "Create an Account successfully! Please sign in";
+
+      // Wait 0.5 seconds
+      setTimeout(function () {
+        container.classList.remove("right-panel-active");
+      }, 500); // 0.5 seconds delay
+    }
+
+    // Show the text
+    message.classList.remove("hidden");
+    message.classList.remove("fading-out"); // Ensure the text fades in properly
+    message.classList.add("visible");
+
+    // Wait 3 seconds, then start fading out the text
+    setTimeout(function () {
+      message.classList.remove("visible");
+      message.classList.add("fading-out");
+    }, 3000); // 3 seconds delay
+  }
+</script>

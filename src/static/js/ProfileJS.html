@@ -1,0 +1,81 @@
+<script>
+  let username = document.getElementById("username").innerHTML;
+
+  function LoadSelectedEvent() {
+    let loading = document.getElementById("popping-loading");
+    let emptyEvent = document.getElementById("empty-event");
+
+    // Show the loading spinner
+    loading.style.display = "block";
+
+    // Run the Google script to fetch the data
+    google.script.run
+      .withSuccessHandler(function (tableContent) {
+        // Check if the table content is empty
+        if (Object.keys(tableContent).length === 0) {
+          emptyEvent.style.display = "block";
+        } else {
+          emptyEvent.style.display = "none";
+          console.log(tableContent);
+          writeTableContent(tableContent);
+        }
+
+        // Hide the loading spinner after data is loaded
+        loading.style.display = "none";
+      })
+      .WriteServiceTable(username);
+  }
+
+  function writeTableContent(tableContent) {
+    for (let key in tableContent) {
+      appendEventRow(key, tableContent[key]["time"], tableContent[key]["place"], tableContent[key]["hours"], tableContent[key]["note"]);
+    }
+  }
+
+  function appendEventRow(event, time, place, hours, note) {
+    // Get the table element
+    let table = document.getElementById("my-service");
+
+    // Create a new row
+    let newRow = table.insertRow();
+
+    // Create and append cells to the new row
+    let cell1 = newRow.insertCell(0);
+    let cell2 = newRow.insertCell(1);
+    let cell3 = newRow.insertCell(2);
+    let cell4 = newRow.insertCell(3);
+    let cell5 = newRow.insertCell(4);
+
+    // Add content to each cell
+    cell1.innerHTML = event;
+    cell2.innerHTML = time;
+    cell3.innerHTML = place;
+    cell4.innerHTML = hours;
+    cell5.innerHTML = note;
+  }
+
+  function clearTable() {
+    let table = document.getElementById("my-service");
+
+    // Remove all rows except the header (first row)
+    let rowCount = table.rows.length;
+    for (let i = rowCount - 1; i > 0; i--) {
+      table.deleteRow(i);
+    }
+  }
+
+  function getPersonalInfo() {
+    let username = document.getElementById("username");
+    google.script.run.withSuccessHandler(writePersonalInfo).readPersonalInfo(username.innerHTML);
+  }
+
+  function writePersonalInfo(personalInfo) {
+    let student_id = document.getElementById("student-id");
+    let email = document.getElementById("email");
+    let phone = document.getElementById("phone");
+
+    student_id.innerHTML = "學號: " + personalInfo[0];
+    email.innerHTML = "Email: " + personalInfo[1];
+    phone.innerHTML = "手機: " + personalInfo[2];
+  }
+</script>

@@ -1,4 +1,9 @@
+# idea
+.idea
+# clasp
 .clasp.json
 appsscript.json
-
+# prettier
 .prettierrc.json
+# node_modules
+node_modules
