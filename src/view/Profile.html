@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <?!= include("Profile", "css");?>
   </head>
-  <body>
+  <body onload="LoadSelectedEvent()">
     <header>
       <h1>我的資訊</h1>
       <h3 id="username"><?= username ?></h3>
@@ -73,9 +73,10 @@
           </tr>
         </table>
       </div>
-      <div id="loading" style="display: none"></div>
-      <div id="empty-content" style="display: none">尚未選擇任何服務學習</div>
-      <button id="check-btn">檢視我的服務學習</button>
+      <div id="popping-loading" class="popping-loading">
+        <p>Loading...</p>
+      </div>
+      <div id="empty-event" style="display: none">尚未選擇任何服務學習</div>
     </div>
 
     <?!= include("Profile", "js");?>

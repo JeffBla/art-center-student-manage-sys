@@ -331,6 +331,8 @@ function eventConfirmClicked(username, eventName) {
           .getValue() == username
       ) {
         let finalEventCol = getRowDataLength(choiceSheet, y);
+        // Check if the event is already selected
+        // Get the selected event row
         selectdEvent = choiceSheet
           .getRange(y, 1, 1, finalEventCol)
           .getValues()[0];
@@ -466,30 +468,82 @@ function WriteServiceTable(username) {
   let eventsData = {};
   let rowLength = 0;
 
-  for (let y = 2; y <= choiceSheet.getLastRow(); y++) {
-    if (choiceSheet.getRange(y, 1).getValue() == username) {
+  let selectedEvent = [];
+  // Get the selected event
+  for (
+    let y = CHOICE_TABLE.CHOICE_SHEET_START;
+    y <= choiceSheet.getLastRow();
+    y++
+  ) {
+    if (
+      choiceSheet.getRange(y, CHOICE_TABLE.TABLE_CHOICE_NAME_IDX).getValue() ==
+      username
+    ) {
       rowLength = getRowDataLength(choiceSheet, y);
 
       for (let col = 2; col <= rowLength; col++) {
-        for (let y2 = 10; y2 <= eventSheet.getLastRow(); y2++) {
-          if (
-            eventSheet.getRange(y2, 2).getValue() ==
-            choiceSheet.getRange(y, col).getValue()
-          ) {
-            eventsData[choiceSheet.getRange(y, col).getValue()] = {
-              time: eventSheet.getRange(y2, 3).getValue(),
-              place: eventSheet.getRange(y2, 4).getValue(),
-              hours: eventSheet.getRange(y2, 5).getValue(),
-              note: eventSheet.getRange(y2, 9).getValue(),
-            };
-            break;
-          }
-        }
+        selectedEvent.push(choiceSheet.getRange(y, col).getValue());
       }
 
       break;
     }
   }
+  if (selectedEvent.length == 0) {
+    return [];
+  }
+
+  // Collect the event data
+  for (
+    let y = EVENT_TABLE.EVENT_SHEET_START;
+    y <= eventSheet.getLastRow();
+    y++
+  ) {
+    let findedEventIdx = selectedEvent.indexOf(
+      eventSheet.getRange(y, EVENT_TABLE.TABLE_EVENT_NAME_IDX).getValue()
+    );
+    // If the event is selected, which means the event is not undefined
+    if (findedEventIdx > -1) {
+      eventsData[selectedEvent[findedEventIdx]] = {
+        time: eventSheet
+          .getRange(y, EVENT_TABLE.TABLE_EVENT_TIME_IDX)
+          .getValue(),
+        place: eventSheet
+          .getRange(y, EVENT_TABLE.TABLE_EVENT_LOCATION_IDX)
+          .getValue(),
+        hours: eventSheet
+          .getRange(y, EVENT_TABLE.TABLE_EVENT_WORKHOUR_IDX)
+          .getValue(),
+        note: eventSheet
+          .getRange(y, EVENT_TABLE.TABLE_EVENT_DESCRIPTION_IDX)
+          .getValue(),
+      };
+      // Remove the selected event from the selectedEvent list
+      selectedEvent.slice(findedEventIdx, 1);
+      if (selectedEvent.length == 0) break;
+    }
+  }
 
   return eventsData;
+}
+
+function readPersonalInfo(username) {
+  let userSheet = ss.getSheetByName("USER");
+  let personalInfo = [];
+
+  for (let y = 2; y <= userSheet.getLastRow(); y++) {
+    if (userSheet.getRange(y, USER_TABLE.TABLE_USER_NAME_COL_IDX) == username) {
+      personalInfo.push(
+        userSheet.getRange(y, USER_TABLE.TABLE_USER_STUDENTID_COL_IDX)
+      );
+      personalInfo.push(
+        userSheet.getRange(y, USER_TABLE.TABLE_USER_EMAIL_COL_IDX)
+      );
+      personalInfo.push(
+        userSheet.getRange(y, USER_TABLE.TABLE_USER_PHONE_COL_IDX)
+      );
+    }
+    break;
+  }
+  console.log(personalInfo);
+  return personalInfo;
 }
