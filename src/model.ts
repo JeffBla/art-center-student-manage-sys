@@ -371,6 +371,14 @@ function eventConfirmClicked(username, eventName) {
         } else {
           workforceListRange.setValue(username);
         }
+
+        // Update the current number of workforce
+        let currentWorkforceBlock = participateSheet.getRange(
+          y,
+          PARTICIPATE_TABLE.TABLE_PARTICIPATE_CURRENT_WORKFORCE_IDX
+        );
+        let currentWorkforceNum = Number(currentWorkforceBlock.getValue());
+        currentWorkforceBlock.setValue(currentWorkforceNum + 1);
         break;
       }
     }
