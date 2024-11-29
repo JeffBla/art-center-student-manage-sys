@@ -6,11 +6,11 @@
     console.log("Loading table data...");
     // Call the Apps Script function to get the data
     google.script.run.withSuccessHandler(displayData).getEventSheetData();
+
+    console.log("Loading Complete...");
   }
 
   function displayData(data) {
-    console.log(data);
-
     var container = document.getElementById("table-container");
     container.innerHTML = ""; // Clear any existing content
 

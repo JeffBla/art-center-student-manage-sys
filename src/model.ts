@@ -555,3 +555,90 @@ function readPersonalInfo(username) {
   console.log(personalInfo);
   return personalInfo;
 }
+
+function cancelSelectedEvent(username, eventName) {
+  let participateSheet = ss.getSheetByName("PARTICIPATE");
+  let data = participateSheet.getDataRange().getValues();
+
+  let choiceSheet = ss.getSheetByName("CHOICE");
+
+  let eventSheet = ss.getSheetByName("EVENT");
+
+  // Remove the event from the participate table
+  for (let i = 1; i < data.length; i++) {
+    if (
+      data[i][PARTICIPATE_TABLE.TABLE_PARTICIPATE_EVNET_NAME_IDX - 1] ===
+      eventName
+    ) {
+      // Remove the username of the workforce
+      let workforceList =
+        data[i][
+          PARTICIPATE_TABLE.TABLE_PARTICIPATE_WORKFORCE_LIST_IDX - 1
+        ].split("/");
+      let index = workforceList.indexOf(username);
+      if (index > -1) {
+        workforceList.splice(index, 1);
+        participateSheet
+          .getRange(
+            i + 1,
+            PARTICIPATE_TABLE.TABLE_PARTICIPATE_WORKFORCE_LIST_IDX
+          )
+          .setValue(workforceList.join("/"));
+        // Update the current number of workforce
+        let currentWorkforceBlock = participateSheet.getRange(
+          i + 1,
+          PARTICIPATE_TABLE.TABLE_PARTICIPATE_CURRENT_WORKFORCE_IDX
+        );
+        let currentWorkforceNum = Number(currentWorkforceBlock.getValue());
+        currentWorkforceBlock.setValue(currentWorkforceNum - 1);
+      }
+      break;
+    }
+  }
+
+  // Remove the event from the choice table
+  for (
+    let y = CHOICE_TABLE.CHOICE_SHEET_START;
+    y <= choiceSheet.getLastRow();
+    y++
+  ) {
+    if (
+      choiceSheet.getRange(y, CHOICE_TABLE.TABLE_CHOICE_NAME_IDX).getValue() ==
+      username
+    ) {
+      let finalEventCol = getRowDataLength(choiceSheet, y);
+      let selectdEvent = choiceSheet
+        .getRange(y, 1, 1, finalEventCol)
+        .getValues()[0];
+      let index = selectdEvent.indexOf(eventName);
+      if (index > -1) {
+        // clear the selected event
+        selectdEvent[index] = "";
+        choiceSheet.getRange(y, 1, 1, finalEventCol).setValues([selectdEvent]);
+      }
+      break;
+    }
+  }
+
+  // Update the remain people from the event table
+  for (
+    let y = EVENT_TABLE.EVENT_SHEET_START;
+    y <= eventSheet.getLastRow();
+    y++
+  ) {
+    if (
+      eventSheet.getRange(y, EVENT_TABLE.TABLE_EVENT_NAME_IDX).getValue() ==
+      eventName
+    ) {
+      let remainPeopleBlock = eventSheet.getRange(
+        y,
+        EVENT_TABLE.TABLE_EVENT_REMAIN_PEOPLE_IDX
+      );
+      let remainPeopleNum = Number(remainPeopleBlock.getValue());
+      remainPeopleBlock.setValue(remainPeopleNum + 1);
+      break;
+    }
+  }
+
+  return "Event canceled successfully";
+}
