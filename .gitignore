@@ -7,3 +7,6 @@ appsscript.json
 .prettierrc.json
 # node_modules
 node_modules
+
+# firebase service account
+art-center-service-learning-firebase-adminsdk-71cle-9ae6a911f3.json
