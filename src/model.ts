@@ -306,112 +306,170 @@ function getEventInfo(eventName) {
   return eventInfo;
 }
 
+function isUserAvailable(username: string, eventName: string): boolean {
+  let choiceSheet = ss.getSheetByName("CHOICE");
+  let eventSheet = ss.getSheetByName("EVENT");
+
+  // Check the choice table
+  for (let i = 1; i <= choiceSheet.getLastRow(); i++) {
+    if (
+      choiceSheet.getRange(i, CHOICE_TABLE.TABLE_CHOICE_NAME_IDX).getValue() ===
+      username
+    ) {
+      let rowLength = getRowDataLength(choiceSheet, i);
+      let selectedEvents = choiceSheet
+        .getRange(i, 1, 1, rowLength)
+        .getValues()[0];
+      if (selectedEvents.includes(eventName)) {
+        return false;
+      }
+    }
+  }
+
+  // Check the event table for empty spaces
+  for (
+    let i = EVENT_TABLE.EVENT_SHEET_START;
+    i <= eventSheet.getLastRow();
+    i++
+  ) {
+    if (
+      eventSheet.getRange(i, EVENT_TABLE.TABLE_EVENT_NAME_IDX).getValue() ===
+      eventName
+    ) {
+      let remainPeopleBlock = eventSheet.getRange(
+        i,
+        EVENT_TABLE.TABLE_EVENT_REMAIN_PEOPLE_IDX
+      );
+      let remainPeopleNum = Number(remainPeopleBlock.getValue());
+      if (remainPeopleNum <= 0) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 function eventConfirmClicked(username, eventName) {
   const lock = LockService.getScriptLock();
   try {
     // Wait for up to 30 seconds to acquire the lock
     lock.waitLock(30000);
 
-    let choiceSheet = ss.getSheetByName("CHOICE");
-    let isChoiceExist = false;
-    let selectdEvent;
+    if (!isUserAvailable(username, eventName)) {
+      console.log(
+        `User ${username} is not available for the event ${eventName}`
+      );
+      return false;
+    }
 
-    let participateSheet = ss.getSheetByName("PARTICIPATE");
+    updateChoiceTable(username, eventName);
 
-    let eventSheet = ss.getSheetByName("EVENT");
-    // Maintain the choice table
-    for (
-      let y = CHOICE_TABLE.CHOICE_SHEET_START;
-      y <= choiceSheet.getLastRow();
-      y++
-    ) {
-      if (
-        choiceSheet
-          .getRange(y, CHOICE_TABLE.TABLE_CHOICE_NAME_IDX)
-          .getValue() == username
-      ) {
-        let finalEventCol = getRowDataLength(choiceSheet, y);
-        // Check if the event is already selected
-        // Get the selected event row
-        selectdEvent = choiceSheet
-          .getRange(y, 1, 1, finalEventCol)
-          .getValues()[0];
-        console.log(selectdEvent);
-        if (!hasEvent(selectdEvent, eventName)) {
-          choiceSheet.getRange(y, finalEventCol + 1).setValue(eventName);
-        } else {
-          return false;
-        }
-        isChoiceExist = true;
-        break;
-      }
-    }
-    if (isChoiceExist == false) {
-      choiceSheet.appendRow([username, eventName]);
-    }
-    // Maintain the participate table
-    for (
-      let y = PARTICIPATE_TABLE.TABLE_PARTICIPATE_EVNET_NAME_IDX;
-      y <= participateSheet.getLastRow();
-      y++
-    ) {
-      if (
-        participateSheet
-          .getRange(y, PARTICIPATE_TABLE.TABLE_PARTICIPATE_EVNET_NAME_IDX)
-          .getValue() == eventName
-      ) {
-        let workforceListRange = participateSheet.getRange(
-          y,
-          PARTICIPATE_TABLE.TABLE_PARTICIPATE_WORKFORCE_LIST_IDX
-        );
-        if (workforceListRange.getValue() != "") {
-          workforceListRange.setValue(
-            workforceListRange.getValue() + " / " + username
-          );
-        } else {
-          workforceListRange.setValue(username);
-        }
+    updateParticipateTable(username, eventName);
 
-        // Update the current number of workforce
-        let currentWorkforceBlock = participateSheet.getRange(
-          y,
-          PARTICIPATE_TABLE.TABLE_PARTICIPATE_CURRENT_WORKFORCE_IDX
-        );
-        let currentWorkforceNum = Number(currentWorkforceBlock.getValue());
-        currentWorkforceBlock.setValue(currentWorkforceNum + 1);
-        break;
-      }
-    }
-    // Maintain the remain people in the event table
-    for (
-      let y = EVENT_TABLE.EVENT_SHEET_START;
-      y <= eventSheet.getLastRow();
-      y++
-    ) {
-      if (
-        eventSheet.getRange(y, EVENT_TABLE.TABLE_EVENT_NAME_IDX).getValue() ==
-        eventName
-      ) {
-        let remainPeopleBlock = eventSheet.getRange(
-          y,
-          EVENT_TABLE.TABLE_EVENT_REMAIN_PEOPLE_IDX
-        );
-        let remainPeopleNum = Number(remainPeopleBlock.getValue());
-        if (remainPeopleNum > 0) {
-          remainPeopleBlock.setValue(remainPeopleNum - 1);
-        } else {
-          return false;
-        }
-        break;
-      }
-    }
+    updateEventTable(eventName);
+
     return true;
   } catch (e) {
     console.error("Failed to acquire lock or error in processing:", e);
     return false;
   } finally {
-    // Make sure the lock is always released
     lock.releaseLock();
+  }
+}
+
+function updateChoiceTable(username, eventName) {
+  let choiceSheet = ss.getSheetByName("CHOICE");
+  let isChoiceExist = false;
+  let target_choice_row = 0;
+
+  // Check the choice table
+  for (
+    let y = CHOICE_TABLE.CHOICE_SHEET_START;
+    y <= choiceSheet.getLastRow();
+    y++
+  ) {
+    if (
+      choiceSheet.getRange(y, CHOICE_TABLE.TABLE_CHOICE_NAME_IDX).getValue() ==
+      username
+    ) {
+      target_choice_row = y;
+      isChoiceExist = true;
+      break;
+    }
+  }
+
+  if (!isChoiceExist) {
+    choiceSheet.appendRow([username, eventName]);
+  } else {
+    let target_choice_col = getRowDataLength(choiceSheet, target_choice_row);
+    choiceSheet
+      .getRange(target_choice_row, target_choice_col + 1)
+      .setValue(eventName);
+  }
+}
+
+function updateParticipateTable(username, eventName) {
+  let participateSheet = ss.getSheetByName("PARTICIPATE");
+
+  for (
+    let y = PARTICIPATE_TABLE.TABLE_PARTICIPATE_EVNET_NAME_IDX;
+    y <= participateSheet.getLastRow();
+    y++
+  ) {
+    if (
+      participateSheet
+        .getRange(y, PARTICIPATE_TABLE.TABLE_PARTICIPATE_EVNET_NAME_IDX)
+        .getValue() == eventName
+    ) {
+      let workforceListRange = participateSheet.getRange(
+        y,
+        PARTICIPATE_TABLE.TABLE_PARTICIPATE_WORKFORCE_LIST_IDX
+      );
+      if (workforceListRange.getValue() != "") {
+        workforceListRange.setValue(
+          workforceListRange.getValue() + " / " + username
+        );
+      } else {
+        workforceListRange.setValue(username);
+      }
+
+      // Update the current number of workforce
+      let currentWorkforceBlock = participateSheet.getRange(
+        y,
+        PARTICIPATE_TABLE.TABLE_PARTICIPATE_CURRENT_WORKFORCE_IDX
+      );
+      let currentWorkforceNum = Number(currentWorkforceBlock.getValue());
+      currentWorkforceBlock.setValue(currentWorkforceNum + 1);
+      break;
+    }
+  }
+}
+
+function updateEventTable(eventName) {
+  let eventSheet = ss.getSheetByName("EVENT");
+
+  for (
+    let y = EVENT_TABLE.EVENT_SHEET_START;
+    y <= eventSheet.getLastRow();
+    y++
+  ) {
+    if (
+      eventSheet.getRange(y, EVENT_TABLE.TABLE_EVENT_NAME_IDX).getValue() ==
+      eventName
+    ) {
+      let remainPeopleBlock = eventSheet.getRange(
+        y,
+        EVENT_TABLE.TABLE_EVENT_REMAIN_PEOPLE_IDX
+      );
+      let remainPeopleNum = Number(remainPeopleBlock.getValue());
+      if (remainPeopleNum > 0) {
+        remainPeopleBlock.setValue(remainPeopleNum - 1);
+      } else {
+        throw new Error(`No remaining spots for event ${eventName}`);
+      }
+      break;
+    }
   }
 }
 
@@ -557,46 +615,28 @@ function readPersonalInfo(username) {
 }
 
 function cancelSelectedEvent(username, eventName) {
-  let participateSheet = ss.getSheetByName("PARTICIPATE");
-  let data = participateSheet.getDataRange().getValues();
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(30000); // wait 30 seconds for others to finish
 
+    removeEventFromChoiceTable(username, eventName);
+
+    removeUserFromParticipateTable(username, eventName);
+
+    updateEventTableOnCancel(eventName);
+
+    return true;
+  } catch (e) {
+    console.error("Failed to acquire lock or error in processing:", e);
+    return false;
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function removeEventFromChoiceTable(username, eventName) {
   let choiceSheet = ss.getSheetByName("CHOICE");
 
-  let eventSheet = ss.getSheetByName("EVENT");
-
-  // Remove the event from the participate table
-  for (let i = 1; i < data.length; i++) {
-    if (
-      data[i][PARTICIPATE_TABLE.TABLE_PARTICIPATE_EVNET_NAME_IDX - 1] ===
-      eventName
-    ) {
-      // Remove the username of the workforce
-      let workforceList =
-        data[i][
-          PARTICIPATE_TABLE.TABLE_PARTICIPATE_WORKFORCE_LIST_IDX - 1
-        ].split("/");
-      let index = workforceList.indexOf(username);
-      if (index > -1) {
-        workforceList.splice(index, 1);
-        participateSheet
-          .getRange(
-            i + 1,
-            PARTICIPATE_TABLE.TABLE_PARTICIPATE_WORKFORCE_LIST_IDX
-          )
-          .setValue(workforceList.join("/"));
-        // Update the current number of workforce
-        let currentWorkforceBlock = participateSheet.getRange(
-          i + 1,
-          PARTICIPATE_TABLE.TABLE_PARTICIPATE_CURRENT_WORKFORCE_IDX
-        );
-        let currentWorkforceNum = Number(currentWorkforceBlock.getValue());
-        currentWorkforceBlock.setValue(currentWorkforceNum - 1);
-      }
-      break;
-    }
-  }
-
-  // Remove the event from the choice table
   for (
     let y = CHOICE_TABLE.CHOICE_SHEET_START;
     y <= choiceSheet.getLastRow();
@@ -606,21 +646,58 @@ function cancelSelectedEvent(username, eventName) {
       choiceSheet.getRange(y, CHOICE_TABLE.TABLE_CHOICE_NAME_IDX).getValue() ==
       username
     ) {
-      let finalEventCol = getRowDataLength(choiceSheet, y);
-      let selectdEvent = choiceSheet
-        .getRange(y, 1, 1, finalEventCol)
+      let target_choice_col = getRowDataLength(choiceSheet, y);
+      let selectedEvents = choiceSheet
+        .getRange(y, 1, 1, target_choice_col)
         .getValues()[0];
-      let index = selectdEvent.indexOf(eventName);
-      if (index > -1) {
-        // clear the selected event
-        selectdEvent[index] = "";
-        choiceSheet.getRange(y, 1, 1, finalEventCol).setValues([selectdEvent]);
-      }
+      let updatedEvents = selectedEvents.filter((event) => event !== eventName);
+      choiceSheet.getRange(y, 1, 1, target_choice_col).clearContent();
+      choiceSheet
+        .getRange(y, 1, 1, updatedEvents.length)
+        .setValues([updatedEvents]);
       break;
     }
   }
+}
 
-  // Update the remain people from the event table
+function removeUserFromParticipateTable(username, eventName) {
+  let participateSheet = ss.getSheetByName("PARTICIPATE");
+
+  for (
+    let y = PARTICIPATE_TABLE.TABLE_PARTICIPATE_EVNET_NAME_IDX;
+    y <= participateSheet.getLastRow();
+    y++
+  ) {
+    if (
+      participateSheet
+        .getRange(y, PARTICIPATE_TABLE.TABLE_PARTICIPATE_EVNET_NAME_IDX)
+        .getValue() == eventName
+    ) {
+      let workforceListRange = participateSheet.getRange(
+        y,
+        PARTICIPATE_TABLE.TABLE_PARTICIPATE_WORKFORCE_LIST_IDX
+      );
+      let workforceList = workforceListRange.getValue().split(" / ");
+      let updatedWorkforceList = workforceList.filter(
+        (user) => user !== username
+      );
+      workforceListRange.setValue(updatedWorkforceList.join(" / "));
+
+      // Update the current number of workforce
+      let currentWorkforceBlock = participateSheet.getRange(
+        y,
+        PARTICIPATE_TABLE.TABLE_PARTICIPATE_CURRENT_WORKFORCE_IDX
+      );
+      let currentWorkforceNum = Number(currentWorkforceBlock.getValue());
+      currentWorkforceBlock.setValue(currentWorkforceNum - 1);
+      break;
+    }
+  }
+}
+
+function updateEventTableOnCancel(eventName) {
+  let eventSheet = ss.getSheetByName("EVENT");
+
   for (
     let y = EVENT_TABLE.EVENT_SHEET_START;
     y <= eventSheet.getLastRow();
@@ -639,6 +716,4 @@ function cancelSelectedEvent(username, eventName) {
       break;
     }
   }
-
-  return "Event canceled successfully";
 }
