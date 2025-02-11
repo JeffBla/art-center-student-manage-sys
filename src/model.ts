@@ -74,14 +74,46 @@ function checkLogin(studentID, password) {
   return isFound ? true : false;
 }
 
+function userClicked(userData) {
+  if (
+    !userData.userName ||
+    !userData.userStudentID ||
+    !userData.userEmail ||
+    !userData.userPhone ||
+    !userData.userPassword
+  ) {
+    return "Some field is empty.";
+  }
+
+  let usersheet = ss.getSheetByName("USER");
+  for (let i = 2; i <= usersheet.getLastRow(); i++) {
+    let studentID = usersheet
+      .getRange(i, USER_TABLE.TABLE_USER_STUDENTID_COL_IDX)
+      .getValue();
+    if (studentID == userData.userStudentID) {
+      return false;
+    }
+  }
+
+  saveUser(
+    userData.userName,
+    userData.userStudentID,
+    userData.userEmail,
+    userData.userPhone,
+    userData.userPassword
+  );
+
+  return true;
+}
+
 function saveUser(username, studentID, email, phone, password) {
   let usersheet = ss.getSheetByName("USER");
   usersheet.appendRow([
     new Date(),
     username,
     studentID,
-    email,
     phone,
+    email,
     password,
   ]);
 }

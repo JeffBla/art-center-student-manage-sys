@@ -162,7 +162,12 @@
 
   .overlay {
     background: rgb(2, 0, 36);
-    background: linear-gradient(150deg, rgba(2, 0, 36, 1) 0%, rgba(255, 252, 48, 1) 0%, rgba(40, 213, 205, 1) 70%);
+    background: linear-gradient(
+      150deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(255, 252, 48, 1) 0%,
+      rgba(40, 213, 205, 1) 70%
+    );
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
@@ -346,5 +351,44 @@
       text-align: center;
       margin-top: 10px;
     }
+  }
+
+  /* Loading spinner styles */
+  .loading-spinner {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .spinner {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loading-spinner p {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #333;
   }
 </style>

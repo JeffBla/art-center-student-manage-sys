@@ -11,9 +11,9 @@
     container.classList.remove("right-panel-active");
   });
 
-  document.getElementById("btn").addEventListener("click", doStuff);
+  document.getElementById("btn").addEventListener("click", Signup);
 
-  function doStuff() {
+  function Signup() {
     var userData = {};
 
     userData.userName = document.getElementById("name").value;
@@ -22,46 +22,58 @@
     userData.userPhone = document.getElementById("phone").value;
     userData.userPassword = document.getElementById("password").value;
 
-    google.script.run.withSuccessHandler(isValid).userClicked(userData);
+    document.getElementById("loading-spinner").style.display = "flex";
+    console.log("Signing up...");
+    google.script.run.withSuccessHandler(SignupValidator).userClicked(userData);
+
     document.getElementById("name").value = "";
     document.getElementById("student-id").value = "";
     document.getElementById("email").value = "";
     document.getElementById("phone").value = "";
     document.getElementById("password").value = "";
+
+    btn.disabled = true;
+    // Wait 0.5 seconds
+    setTimeout(function () {
+      btn.disabled = false;
+    }, 0.5);
   }
 
-  function isValid(valid) {
-    const message = document.getElementById("message");
-    const message2 = document.getElementById("message2");
+  function SignupValidator(isValid) {
+    const signup_msg = document.getElementById("signup_msg");
+    const signin_msg = document.getElementById("signin_msg");
     const container = document.getElementById("container");
 
-    if (valid == "FALSE") {
-      message.style.color = "#EA0000";
-      message.textContent = "You already have an account!";
-    } else if (valid == "Some field is empty.") {
-      message.style.color = "#EA0000";
-      message.textContent = "Please enter all fields";
+    console.log("Sign up validator complete!");
+    document.getElementById("loading-spinner").style.display = "none";
+
+    if (!isValid) {
+      signup_msg.style.color = "#EA0000";
+      signup_msg.textContent = "You already have an account!";
+    } else if (isValid == "Some field is empty.") {
+      signup_msg.style.color = "#EA0000";
+      signup_msg.textContent = "Please enter all fields";
     } else {
-      message.style.color = "#00BB00";
-      message.textContent = "Create an Account successfully!";
-      message2.style.color = "#00BB00";
-      message2.textContent = "Create an Account successfully! Please sign in";
+      signup_msg.style.color = "#00BB00";
+      signup_msg.textContent = "Create an Account successfully!";
+      signin_msg.style.color = "#00BB00";
+      signin_msg.textContent = "Create an Account successfully! Please sign in";
 
       // Wait 0.5 seconds
       setTimeout(function () {
         container.classList.remove("right-panel-active");
-      }, 500); // 0.5 seconds delay
+      }, 500);
     }
 
     // Show the text
-    message.classList.remove("hidden");
-    message.classList.remove("fading-out"); // Ensure the text fades in properly
-    message.classList.add("visible");
+    signup_msg.classList.remove("hidden");
+    signup_msg.classList.remove("fading-out"); // Ensure the text fades in properly
+    signup_msg.classList.add("visible");
 
     // Wait 3 seconds, then start fading out the text
     setTimeout(function () {
-      message.classList.remove("visible");
-      message.classList.add("fading-out");
+      signup_msg.classList.remove("visible");
+      signup_msg.classList.add("fading-out");
     }, 3000); // 3 seconds delay
   }
 </script>
