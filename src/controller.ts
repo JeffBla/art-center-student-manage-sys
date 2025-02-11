@@ -40,16 +40,6 @@ function doPost(e) {
 }
 
 function SignUp(e) {
-  let {
-    name: username,
-    studentid: studentID,
-    email,
-    phone,
-    password,
-  } = e.parameter;
-
-  saveUser(username, studentID, email, phone, password);
-
   // Redirect to login page with success message
   let htmlOutput = HtmlService.createTemplateFromFile(
     VIEW_PAGE.VIEW_PAGE_LOGIN
@@ -86,7 +76,6 @@ function Login(e) {
 }
 
 function Logout(e) {
-  LogOutUserNow(e.parameter.username);
   let htmlOutput = HtmlService.createTemplateFromFile(
     VIEW_PAGE.VIEW_PAGE_LOGIN
   );

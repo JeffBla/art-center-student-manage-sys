@@ -36,7 +36,7 @@ function checkLogin(studentID, password) {
     return false;
   }
 
-  // login
+  // login validation
   let isFound = false;
   let username = "";
   for (let i = 2; i <= usersheet.getLastRow(); i++) {
@@ -65,16 +65,17 @@ function checkLogin(studentID, password) {
         currentsheet
           .getRange(i, CURRENT_TABLE.TABLE_CURRENT_CurrentLoginTime_COL_IDX)
           .setValue(new Date());
+      } else {
         currentsheet.appendRow([username, studentID, new Date()]);
-        break;
       }
+      break;
     }
   }
 
-  return isFound ? true : false;
+  return isFound;
 }
 
-function userClicked(userData) {
+function userSignup(userData) {
   if (
     !userData.userName ||
     !userData.userStudentID ||
@@ -116,55 +117,6 @@ function saveUser(username, studentID, email, phone, password) {
     email,
     password,
   ]);
-}
-
-function LogOutUserNow(username) {
-  let currentsheet = ss.getSheetByName("CURRENT");
-  for (let i = 2; i <= currentsheet.getLastRow(); i++) {
-    if (
-      currentsheet
-        .getRange(i, CURRENT_TABLE.TABLE_CURRENT_NAME_COL_IDX)
-        .getValue() == username
-    ) {
-      currentsheet
-        .getRange(i, CURRENT_TABLE.TABLE_CURRENT_CurrentLoginTime_COL_IDX)
-        .setValue("X");
-    }
-  }
-  for (let i = 2; i <= currentsheet.getLastRow(); i++) {
-    if (
-      currentsheet
-        .getRange(i, CURRENT_TABLE.TABLE_CURRENT_CurrentLoginTime_COL_IDX)
-        .getValue() == "X"
-    ) {
-      currentsheet.deleteRow(i);
-    }
-  }
-}
-
-function LogOutUser() {
-  let currentsheet = ss.getSheetByName("CURRENT");
-  let ThirtyMinutesAgo = new Date(Date.now() - 30000 * 60);
-  for (let i = 2; i <= currentsheet.getLastRow(); i++) {
-    if (
-      currentsheet
-        .getRange(i, CURRENT_TABLE.TABLE_CURRENT_CurrentLoginTime_COL_IDX)
-        .getValue() < ThirtyMinutesAgo
-    ) {
-      currentsheet
-        .getRange(i, CURRENT_TABLE.TABLE_CURRENT_CurrentLoginTime_COL_IDX)
-        .setValue("X");
-    }
-  }
-  for (let i = 2; i <= currentsheet.getLastRow(); i++) {
-    if (
-      currentsheet
-        .getRange(i, CURRENT_TABLE.TABLE_CURRENT_CurrentLoginTime_COL_IDX)
-        .getValue() == "X"
-    ) {
-      currentsheet.deleteRow(i);
-    }
-  }
 }
 
 function getPaticipateData() {

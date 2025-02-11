@@ -1,6 +1,6 @@
 <script>
-  const signUpButton = document.getElementById("signUp");
-  const signInButton = document.getElementById("signIn");
+  const signUpButton = document.getElementById("signUpPage-btn");
+  const signInButton = document.getElementById("signInPage-btn");
   const container = document.getElementById("container");
 
   signUpButton.addEventListener("click", () => {
@@ -11,9 +11,10 @@
     container.classList.remove("right-panel-active");
   });
 
-  document.getElementById("btn").addEventListener("click", Signup);
+  document.getElementById("signUp-btn").addEventListener("click", SignUp);
+  document.getElementById("signIn-btn").addEventListener("click", SignIn);
 
-  function Signup() {
+  function SignUp() {
     var userData = {};
 
     userData.userName = document.getElementById("name").value;
@@ -24,7 +25,7 @@
 
     document.getElementById("loading-spinner").style.display = "flex";
     console.log("Signing up...");
-    google.script.run.withSuccessHandler(SignupValidator).userClicked(userData);
+    google.script.run.withSuccessHandler(SignupValidator).userSignup(userData);
 
     document.getElementById("name").value = "";
     document.getElementById("student-id").value = "";
@@ -32,10 +33,11 @@
     document.getElementById("phone").value = "";
     document.getElementById("password").value = "";
 
-    btn.disabled = true;
+    signUp_btn = document.getElementById("signUp-btn");
+    signUp_btn.disabled = true;
     // Wait 0.5 seconds
     setTimeout(function () {
-      btn.disabled = false;
+      signUp_btn.disabled = false;
     }, 0.5);
   }
 
@@ -75,5 +77,22 @@
       signup_msg.classList.remove("visible");
       signup_msg.classList.add("fading-out");
     }, 3000); // 3 seconds delay
+  }
+
+  function SignIn() {
+    var userData = {};
+
+    document.getElementById("loading-spinner").style.display = "flex";
+    console.log("Signing in...");
+
+    document.getElementById("student-id").value = "";
+    document.getElementById("password").value = "";
+
+    signIn_btn = document.getElementById("signIn-btn");
+    signIn_btn.disabled = true;
+    // Wait 0.5 seconds
+    setTimeout(function () {
+      signIn_btn.disabled = false;
+    }, 0.5);
   }
 </script>
