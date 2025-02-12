@@ -57,18 +57,28 @@
             required
           />
           <div id="signup_msg" class="hidden"></div>
-          <button id="signUp-btn" type="submit" value="SignUp" name="SignUpButton">
+          <button
+            id="signUp-btn"
+            type="submit"
+            value="SignUp"
+            name="SignUpButton"
+          >
             Sign Up
           </button>
         </form>
       </div>
       <div class="form-container sign-in-container">
         <?var url = getUrl();?>
-        <form method="post" action="<?= url ?>">
+        <form id="signInForm" method="post" action="<?= url ?>">
           <h1>Sign in</h1>
           <input type="text" name="studentid" placeholder="Student ID" />
           <input type="password" name="password" placeholder="Password" />
-          <button id="signIn-btn"" type="submit" value="Login" name="LoginButton" id="sign-btn">
+          <button
+            id="signIn-btn"
+            type="submit"
+            value="Login"
+            name="LoginButton"
+          >
             Sign In
           </button>
           <span id="signin_msg"><?= message ?></span>

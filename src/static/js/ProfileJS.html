@@ -44,13 +44,12 @@
     // Create a new row
     let newRow = table.insertRow();
 
-    // Create and append cells to the new row
     let cell1 = newRow.insertCell(0);
     let cell2 = newRow.insertCell(1);
     let cell3 = newRow.insertCell(2);
     let cell4 = newRow.insertCell(3);
     let cell5 = newRow.insertCell(4);
-    let cell6 = newRow.insertCell(5); // New cell for the cancel button
+    let cell6 = newRow.insertCell(5);
 
     // Add content to each cell
     cell1.innerHTML = eventname;
@@ -92,7 +91,9 @@
 
   function getPersonalInfo() {
     let username = document.getElementById("username");
-    google.script.run.withSuccessHandler(writePersonalInfo).readPersonalInfo(username.innerHTML);
+    google.script.run
+      .withSuccessHandler(writePersonalInfo)
+      .readPersonalInfo(username.innerHTML);
   }
 
   function writePersonalInfo(personalInfo) {

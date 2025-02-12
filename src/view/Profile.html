@@ -3,7 +3,10 @@
   <head>
     <base target="_top" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <?!= include("Profile", "css");?>
   </head>
   <body onload="LoadSelectedEvent()">
@@ -17,13 +20,17 @@
       <form method="post" action="<?= getUrl() ?>">
         <input type="hidden" value="<?= username ?>" name="username" />
         <input type="hidden" value="<?= studentid ?>" name="studentid" />
-        <button type="submit" value="Home" name="HomeButton"><i class="fa fa-home" aria-hidden="true"></i> 首頁</button>
+        <button type="submit" value="Home" name="HomeButton">
+          <i class="fa fa-home" aria-hidden="true"></i> 首頁
+        </button>
       </form>
       <input type="hidden" value="<?= username ?>" name="username" />
       <form method="post" action="<?= getUrl() ?>">
         <input type="hidden" value="<?= username ?>" name="username" />
         <input type="hidden" value="<?= studentid ?>" name="studentid" />
-        <button type="submit" value="Profile" name="ProfileButton"><i class="fa fa-user" aria-hidden="true"></i> 我的資訊</button>
+        <button type="submit" value="Profile" name="ProfileButton">
+          <i class="fa fa-user" aria-hidden="true"></i> 我的資訊
+        </button>
       </form>
       <input type="hidden" value="<?= username ?>" name="username" />
       <form method="post" action="<?= getUrl() ?>">
@@ -37,7 +44,9 @@
       <form method="post" action="<?= getUrl() ?>">
         <input type="hidden" value="<?= username ?>" name="username" />
         <input type="hidden" value="<?= studentid ?>" name="studentid" />
-        <button type="submit" value="Logout" name="LogoutButton"><i class="fa fa-sign-out" aria-hidden="true"></i> 登出</button>
+        <button type="submit" value="Logout" name="LogoutButton">
+          <i class="fa fa-sign-out" aria-hidden="true"></i> 登出
+        </button>
       </form>
     </div>
     <div id="info-box">
@@ -70,6 +79,7 @@
             <th>服務學習地點</th>
             <th>服務學習時數</th>
             <th>備註</th>
+            <th></th>
           </tr>
         </table>
       </div>

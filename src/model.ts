@@ -341,10 +341,11 @@ function eventConfirmClicked(username, eventName) {
     lock.waitLock(30000);
 
     if (!isUserAvailable(username, eventName)) {
-      console.log(
-        `User ${username} is not available for the event ${eventName}`
-      );
-      return false;
+      let alert_str = `User ${username} is not available for the event ${eventName}`;
+      console.log(alert_str);
+      let warning_str =
+        "The event is full or you have already selected the event.";
+      return warning_str;
     }
 
     updateChoiceTable(username, eventName);
