@@ -1,0 +1,16 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    google.script.run
+      .withSuccessHandler(function (canChoose) {
+        let selectServiceButton = document.getElementById(
+          "selectServiceButton"
+        );
+        if (!canChoose) {
+          selectServiceButton.disabled = true;
+        } else {
+          selectServiceButton.disabled = false;
+        }
+      })
+      .canChooseCourse();
+  });
+</script>

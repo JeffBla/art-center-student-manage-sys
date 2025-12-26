@@ -7,8 +7,16 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "@types/google-apps-script": "^1.0.83"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeffBla/art-center-student-manage-sys.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JeffBla/art-center-student-manage-sys/issues"
+  },
+  "homepage": "https://github.com/JeffBla/art-center-student-manage-sys#readme",
+  "description": ""
 }

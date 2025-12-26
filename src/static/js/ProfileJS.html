@@ -15,8 +15,12 @@
         if (Object.keys(tableContent).length === 0) {
           emptyEvent.style.display = "block";
         } else {
-          emptyEvent.style.display = "none";
-          writeTableContent(tableContent);
+          google.script.run
+            .withSuccessHandler(function (canChooseCourse) {
+              emptyEvent.style.display = "none";
+              writeTableContent(tableContent, canChooseCourse);
+            })
+            .canChooseCourse();
         }
 
         // Hide the loading spinner after data is loaded
@@ -25,19 +29,27 @@
       .WriteServiceTable(username);
   }
 
-  function writeTableContent(tableContent) {
+  function writeTableContent(tableContent, canChooseCourse) {
     for (let eventname in tableContent) {
       appendEventRow(
         eventname,
         tableContent[eventname]["time"],
         tableContent[eventname]["place"],
         tableContent[eventname]["hours"],
-        tableContent[eventname]["note"]
+        tableContent[eventname]["note"],
+        canChooseCourse
       );
     }
   }
 
-  function appendEventRow(eventname, time, place, hours, note) {
+  function appendEventRow(
+    eventname,
+    time,
+    place,
+    hours,
+    note,
+    canChooseCourse
+  ) {
     // Get the table element
     let table = document.getElementById("my-service");
 
@@ -59,24 +71,33 @@
     cell5.innerHTML = note;
 
     // Add cancel button to the new cell
-    let cancelButton = document.createElement("button");
-    cancelButton.innerHTML = "放棄選擇此活動";
-    cancelButton.onclick = function () {
-      cancelEvent(eventname, newRow);
-    };
-    cell6.appendChild(cancelButton);
+    if (canChooseCourse) {
+      let cancelButton = document.createElement("button");
+      cancelButton.innerHTML = "放棄選擇此活動";
+      cancelButton.onclick = function () {
+        cancelEvent(eventname, newRow);
+      };
+      cell6.appendChild(cancelButton);
+    }
   }
 
   function cancelEvent(eventname, row) {
-    // Remove the row from the table
-    row.parentNode.removeChild(row);
-
     // Update the backend
     google.script.run
-      .withSuccessHandler(function (response) {
-        console.log(response);
+      .withSuccessHandler(function (canChooseCourse) {
+        if (canChooseCourse) {
+          // Remove the row from the table
+          row.parentNode.removeChild(row);
+          google.script.run
+            .withSuccessHandler(function (response) {
+              console.log(response);
+            })
+            .cancelSelectedEvent(username, eventname);
+        } else {
+          alert("已過選課時間，無法取消活動");
+        }
       })
-      .cancelSelectedEvent(username, eventname);
+      .canChooseCourse();
   }
 
   function clearTable() {

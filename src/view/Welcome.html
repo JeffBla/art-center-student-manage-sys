@@ -3,7 +3,10 @@
   <head>
     <base target="_top" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <?!= include("Welcome", "css");?>
   </head>
   <body onload="loadTableData()">
@@ -11,35 +14,8 @@
       <h1>成大藝術中心</h1>
       <h3><?= username ?></h3>
     </header>
-    <!-- Navigation bar -->
-    <div class="nav-container">
-      <input type="hidden" value="<?= username ?>" name="username" />
-      <form method="post" action="<?= getUrl() ?>">
-        <input type="hidden" value="<?= username ?>" name="username" />
-        <input type="hidden" value="<?= studentid ?>" name="studentid" />
-        <button type="submit" value="Home" name="HomeButton"><i class="fa fa-home" aria-hidden="true"></i> 首頁</button>
-      </form>
-      <input type="hidden" value="<?= username ?>" name="username" />
-      <form method="post" action="<?= getUrl() ?>">
-        <input type="hidden" value="<?= username ?>" name="username" />
-        <input type="hidden" value="<?= studentid ?>" name="studentid" />
-        <button type="submit" value="Profile" name="ProfileButton"><i class="fa fa-user" aria-hidden="true"></i> 我的資訊</button>
-      </form>
-      <input type="hidden" value="<?= username ?>" name="username" />
-      <form method="post" action="<?= getUrl() ?>">
-        <input type="hidden" value="<?= username ?>" name="username" />
-        <input type="hidden" value="<?= studentid ?>" name="studentid" />
-        <button type="submit" value="SelectService" name="SelectLearningButton">
-          <i class="fa fa-hand-o-up" aria-hidden="true"></i> 選擇服務學習
-        </button>
-      </form>
-      <input type="hidden" value="<?= username ?>" name="username" />
-      <form method="post" action="<?= getUrl() ?>">
-        <input type="hidden" value="<?= username ?>" name="username" />
-        <input type="hidden" value="<?= studentid ?>" name="studentid" />
-        <button type="submit" value="Logout" name="LogoutButton"><i class="fa fa-sign-out" aria-hidden="true"></i> 登出</button>
-      </form>
-    </div>
+
+    <?!= evaluatedNavbar ?>
 
     <!-- Loading Spinner -->
     <div id="loading-spinner" class="loading-spinner">
@@ -52,7 +28,10 @@
 
     <footer id="contact">
       <p>成大藝術中心</p>
-      <p><i class="fa fa-map-marker" aria-hidden="true"></i> 701 台南市東區大學路1號</p>
+      <p>
+        <i class="fa fa-map-marker" aria-hidden="true"></i> 701
+        台南市東區大學路1號
+      </p>
       <p>Tel: 06-2757575#50014</p>
     </footer>
 

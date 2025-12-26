@@ -1,0 +1,45 @@
+<!-- Navbar -->
+<?!= include("navbar", "css");?>
+
+<div class="nav-container">
+  <input type="hidden" value="<?= username ?>" name="username" />
+  <form method="post" action="<?= getUrl() ?>">
+    <input type="hidden" value="<?= username ?>" name="username" />
+    <input type="hidden" value="<?= studentid ?>" name="studentid" />
+    <button type="submit" value="Home" name="HomeButton">
+      <i class="fa fa-home" aria-hidden="true"></i> 首頁
+    </button>
+  </form>
+  <input type="hidden" value="<?= username ?>" name="username" />
+  <form method="post" action="<?= getUrl() ?>">
+    <input type="hidden" value="<?= username ?>" name="username" />
+    <input type="hidden" value="<?= studentid ?>" name="studentid" />
+    <button type="submit" value="Profile" name="ProfileButton">
+      <i class="fa fa-user" aria-hidden="true"></i> 我的資訊
+    </button>
+  </form>
+  <input type="hidden" value="<?= username ?>" name="username" />
+  <form method="post" action="<?= getUrl() ?>">
+    <input type="hidden" value="<?= username ?>" name="username" />
+    <input type="hidden" value="<?= studentid ?>" name="studentid" />
+    <button
+      id="selectServiceButton"
+      type="submit"
+      value="SelectService"
+      name="SelectLearningButton"
+      disabled
+    >
+      <i class="fa fa-hand-o-up" aria-hidden="true"></i> 選擇服務學習
+    </button>
+  </form>
+  <input type="hidden" value="<?= username ?>" name="username" />
+  <form method="post" action="<?= getUrl() ?>">
+    <input type="hidden" value="<?= username ?>" name="username" />
+    <input type="hidden" value="<?= studentid ?>" name="studentid" />
+    <button type="submit" value="Logout" name="LogoutButton">
+      <i class="fa fa-sign-out" aria-hidden="true"></i> 登出
+    </button>
+  </form>
+</div>
+
+<?!= include("navbar", "js");?>

@@ -56,6 +56,7 @@ function checkLogin(studentID, password) {
   }
   // update the login time in the current sheet
   if (isFound) {
+    let isOverwrite = false;
     for (let i = 2; i <= currentsheet.getLastRow(); i++) {
       if (
         currentsheet
@@ -65,10 +66,12 @@ function checkLogin(studentID, password) {
         currentsheet
           .getRange(i, CURRENT_TABLE.TABLE_CURRENT_CurrentLoginTime_COL_IDX)
           .setValue(new Date());
-      } else {
-        currentsheet.appendRow([username, studentID, new Date()]);
+        isOverwrite = true;
       }
       break;
+    }
+    if (!isOverwrite) {
+      currentsheet.appendRow([username, studentID, new Date()]);
     }
   }
 
@@ -701,4 +704,15 @@ function updateEventTableOnCancel(eventName) {
       break;
     }
   }
+}
+
+function canChooseCourse() {
+  let settingSheet = ss.getSheetByName("SETTING");
+  let canChooseCourse = settingSheet
+    .getRange(
+      SETTING_TABLE.TABLE_SETTING_CHOOSE_COURSE,
+      SETTING_TABLE.TABLE_SETTING_SHEET_COL_START
+    )
+    .getValue();
+  return canChooseCourse === "Y";
 }

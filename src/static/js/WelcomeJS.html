@@ -17,8 +17,12 @@
     // Hide the loading spinner
     document.getElementById("loading-spinner").style.display = "none";
 
-    // Iterate over each category
-    Object.entries(data).forEach(([category, events]) => {
+    // Iterate over each category, ensuring order
+    const sortedCategories = Object.entries(data).sort(
+      ([categoryA], [categoryB]) => categoryA.localeCompare(categoryB)
+    );
+
+    sortedCategories.forEach(([category, events]) => {
       // Create a new section for each category
       var section = document.createElement("section");
       section.id = "section-" + category;
@@ -37,7 +41,15 @@
       // Create table header
       var thead = document.createElement("thead");
       var headerRow = document.createElement("tr");
-      var headers = ["活動名稱", "活動支援時間", "工作地點(校區/地點)", "工作時數(時)", "人數需求上限(人)", "目前餘額", "備註說明"];
+      var headers = [
+        "活動名稱",
+        "活動支援時間",
+        "工作地點(校區/地點)",
+        "工作時數(時)",
+        "人數需求上限(人)",
+        "目前餘額",
+        "備註說明",
+      ];
 
       headers.forEach(function (header) {
         var th = document.createElement("th");
@@ -51,8 +63,12 @@
       // Create table body
       var tbody = document.createElement("tbody");
 
-      // Iterate over each event in the category
-      Object.entries(events).forEach(([eventName, details]) => {
+      // Ensure events are sorted by event name if needed
+      const sortedEvents = Object.entries(events).sort(([eventA], [eventB]) =>
+        eventA.localeCompare(eventB)
+      );
+
+      sortedEvents.forEach(([eventName, details]) => {
         var row = document.createElement("tr");
 
         // Insert event details into the row
@@ -61,7 +77,14 @@
         eventCell.textContent = eventName;
         row.appendChild(eventCell);
 
-        var fields = ["活動支援時間", "工作地點(校區/地點)", "工作時數(時)", "人數需求上限(人)", "目前餘額", "備註說明"];
+        var fields = [
+          "活動支援時間",
+          "工作地點(校區/地點)",
+          "工作時數(時)",
+          "人數需求上限(人)",
+          "目前餘額",
+          "備註說明",
+        ];
         fields.forEach(function (field) {
           var cell = document.createElement("td");
           if (field != "目前餘額") {

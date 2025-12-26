@@ -30,19 +30,29 @@
     select.appendChild(defaultOption);
 
     // Create optgroups and options
-    for (const [category, events] of Object.entries(data)) {
+    const sortedCategories = Object.entries(data).sort(
+      ([categoryA], [categoryB]) => categoryA.localeCompare(categoryB)
+    );
+
+    sortedCategories.forEach(([category, events]) => {
       const optgroup = document.createElement("optgroup");
       optgroup.label = category;
 
-      for (const [eventName, eventDetails] of Object.entries(events)) {
+      // Sort events within each category
+      const sortedEvents = Object.entries(events).sort(([eventA], [eventB]) =>
+        eventA.localeCompare(eventB)
+      );
+
+      sortedEvents.forEach(([eventName, eventDetails]) => {
         const option = document.createElement("option");
         option.value = eventName;
         option.textContent = eventName;
         optgroup.appendChild(option);
-      }
+      });
 
       select.appendChild(optgroup);
-    }
+    });
+
     // Insert the select element into the DOM
     const container = document.getElementById("selectbox-container");
     container.innerHTML = ""; // Clear any existing content

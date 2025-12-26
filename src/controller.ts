@@ -1,4 +1,4 @@
-import { Include } from "./util";
+// import { Include, TemplateWithNavBar } from "./util";
 
 function doGet(e) {
   let page = e.parameter.page || VIEW_PAGE.VIEW_PAGE_LOGIN;
@@ -55,18 +55,23 @@ function Login(e) {
 
   if (checkLogin(studentID, password)) {
     let userDetails = getUserDetails(studentID);
-    htmlOutput = HtmlService.createTemplateFromFile(
-      VIEW_PAGE.VIEW_PAGE_WELCOME
-    );
-    Object.assign(htmlOutput, {
+    let data = {
       username: userDetails.username,
       studentid: userDetails.studentID,
       email: userDetails.email,
       phone: userDetails.phone,
-      message: "",
-    });
-    htmlOutput.include = Include;
-    return htmlOutput.evaluate();
+    };
+    let navbar_data = {
+      username: userDetails.username,
+      studentid: userDetails.studentID,
+    };
+    let template = TemplateWithNavBar(
+      VIEW_PAGE.VIEW_PAGE_WELCOME,
+      data,
+      navbar_data
+    );
+
+    return template.evaluate();
   } else {
     htmlOutput = HtmlService.createTemplateFromFile(VIEW_PAGE.VIEW_PAGE_LOGIN);
     htmlOutput.message = "Incorrect username or password.";
@@ -85,47 +90,69 @@ function Logout(e) {
 }
 
 function Home(e) {
-  let htmlOutput = HtmlService.createTemplateFromFile(
-    VIEW_PAGE.VIEW_PAGE_WELCOME
-  );
-  Object.assign(htmlOutput, {
+  let data = {
     username: e.parameter.username,
     studentid: e.parameter.studentid,
-    message: "",
-  });
-  htmlOutput.include = Include;
-  return htmlOutput.evaluate();
+  };
+  let navbar_data = {
+    username: e.parameter.username,
+    studentid: e.parameter.studentid,
+  };
+  let template = TemplateWithNavBar(
+    VIEW_PAGE.VIEW_PAGE_WELCOME,
+    data,
+    navbar_data
+  );
+  return template.evaluate();
 }
 
 function Profile(e) {
   let userDetails = getUserDetails(e.parameter.studentid);
-  let htmlOutput = HtmlService.createTemplateFromFile(
-    VIEW_PAGE.VIEW_PAGE_PROFILE
-  );
-  Object.assign(htmlOutput, {
+  let data = {
     username: e.parameter.username,
     studentid: e.parameter.studentid,
     email: userDetails.email,
     phone: userDetails.phone,
-  });
-  htmlOutput.include = Include;
-  return htmlOutput.evaluate();
+  };
+  let navbar_data = {
+    username: e.parameter.username,
+    studentid: e.parameter.studentid,
+  };
+  let template = TemplateWithNavBar(
+    VIEW_PAGE.VIEW_PAGE_PROFILE,
+    data,
+    navbar_data
+  );
+  return template.evaluate();
 }
 
 function SelectService(e) {
-  let htmlOutput = HtmlService.createTemplateFromFile(
-    VIEW_PAGE.VIEW_PAGE_SELECT
-  );
-  Object.assign(htmlOutput, {
-    username: e.parameter.username,
-    studentid: e.parameter.studentid,
-    message: "",
-  });
-  htmlOutput.include = Include;
-  return htmlOutput.evaluate();
-}
-
-function getUrl() {
-  var url = ScriptApp.getService().getUrl();
-  return url;
+  let template;
+  if (canChooseCourse()) {
+    let data = {
+      username: e.parameter.username,
+    };
+    let navbar_data = {
+      username: e.parameter.username,
+      studentid: e.parameter.studentid,
+    };
+    template = TemplateWithNavBar(
+      VIEW_PAGE.VIEW_PAGE_SELECT,
+      data,
+      navbar_data
+    );
+  }else{
+    let data = {
+      username: e.parameter.username,
+    };
+    let navbar_data = {
+      username: e.parameter.username,
+      studentid: e.parameter.studentid,
+    };
+    template = TemplateWithNavBar(
+      VIEW_PAGE.VIEW_PAGE_WELCOME,
+      data,
+      navbar_data
+  }
+  return template.evaluate();
 }

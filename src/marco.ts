@@ -16,7 +16,6 @@ class CURRENT_TABLE {
 class VIEW_PAGE {
   static readonly VIEW_PAGE_LOGIN = "view/Login";
   static readonly VIEW_PAGE_PROFILE = "view/Profile";
-  static readonly VIEW_PAGE_HOME = "view/Home";
   static readonly VIEW_PAGE_SELECT = "view/Select";
   static readonly VIEW_PAGE_WELCOME = "view/Welcome";
 }
@@ -50,4 +49,9 @@ class PARTICIPATE_TABLE {
   static readonly TABLE_PARTICIPATE_EVNET_NAME_IDX = 2;
   static readonly TABLE_PARTICIPATE_CURRENT_WORKFORCE_IDX = 3;
   static readonly TABLE_PARTICIPATE_WORKFORCE_LIST_IDX = 4;
+}
+
+class SETTING_TABLE {
+  static readonly TABLE_SETTING_SHEET_COL_START = 2;
+  static readonly TABLE_SETTING_CHOOSE_COURSE = 1;
 }
